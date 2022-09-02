@@ -1,0 +1,271 @@
+#:set outer_ellipse_size 250
+#:set second_ellipse_size (outer_ellipse_size-10)
+#:set label_width dp(100)
+#:set label_height dp(50)
+
+
+<ClockScreen>:
+	BoxLayout:
+		orientation: "vertical"
+			
+		Label:
+			id: clock_text
+			text: root.cur_time + " " + "[size= 20dp]" + root.am_or_pm + "[/size]"
+			color: [1,1,1,1]
+			text_size: self.size
+			halign: "center"
+			valign: "top"
+			padding: [0, root.height/8]
+			font_size: dp(50)
+			markup: True
+			
+		GridLayout:
+			cols: 3
+			rows: 1
+			size_hint: 1, .08
+			
+			TimerButton:
+				text: "CLOCK"
+				font_size: dp(12)
+				
+			TimerButton:
+				text: "SET TIMER"
+				font_size: dp(12)
+				on_release:
+					root.manager.transition.direction = "left"
+					root.manager.current = "create_timer"
+				
+			TimerButton:
+				text: "VIEW TIMER"
+				font_size: dp(12)
+				on_release:
+					root.manager.transition.direction = "left"
+					root.manager.current = "timer_display"
+			
+
+<DisplayTimerScreen>:
+	Widget:		
+		TimerButton:
+			text: "CLOCK"
+			font_size: dp(12)
+			size: root.width/3, label_height
+			pos: 0, root.height - label_height
+			on_release:
+				root.manager.transition.direction = "right"
+				root.manager.current = "clock"
+			
+		TimerButton:
+			text: "SET TIMER"
+			font_size: dp(12)
+			size: root.width/3, label_height
+			pos: root.width/3, root.height - label_height
+			on_release:
+				root.manager.transition.direction = "right"
+				root.manager.current = "create_timer"
+				
+		TimerButton:
+			text: "VIEW TIMER"
+			font_size: dp(12)
+			size: root.width/3, label_height
+			pos: root.width/1.5, root.height - label_height
+			on_release:
+				root.manager.transition.direction = "right"
+				root.manager.current = "timer_display"
+				
+		Label:
+			text: root.timer_text
+			size: root.size
+			font_size: dp(35)		
+			
+			canvas.before:
+				Color:
+					rgba: (1, 1, 1, 1)
+				Ellipse:
+					size: outer_ellipse_size, outer_ellipse_size
+					pos:
+						root.width/2 - outer_ellipse_size/2, root.height/2 - outer_ellipse_size/2
+					
+				Color:
+					rgba: (1, 0, 0, 1)
+				Ellipse:
+					size: outer_ellipse_size, outer_ellipse_size
+					pos:
+						root.width/2 - outer_ellipse_size/2, root.height/2 - outer_ellipse_size/2
+					angle_end: root.angle
+					
+				Color:
+					rgba: [34/255.0, 32/255.0, 119/225.0, 1]
+				Ellipse:
+					size:
+						second_ellipse_size, second_ellipse_size
+					pos:
+						root.width/2 - second_ellipse_size/2, root.height/2 - second_ellipse_size/2
+					
+			Label:
+				text: "[ref= 'delete']DELETE[/ref]"
+				size: label_width, label_height
+				pos: root.width/5 - label_height, root.height/6.5 - label_height
+				bold: True
+				markup: True
+				on_ref_press: root.delete_timer()
+			
+			Button:
+				id: start_btn
+				text: "START"
+				size: label_width, label_height
+				pos: root.width/2 - label_height, root.height/6.5 - label_height
+				on_release: root.begin()
+				disabled: True
+				
+			Label:
+				text: "[ref= 'pause']PAUSE[/ref]"
+				size: label_width, label_height
+				pos: root.width / 1.25 - label_height, root.height/6.5 - label_height
+				bold: True
+				markup: True
+				on_ref_press: root.pause_timer()
+
+
+<TimerButton@Button>:
+	font_size: dp(33)
+	background_color: [34/255.0, 32/255.0, 119/225.0, 1]
+	background_normal: ""
+	background_disabled_normal: ""
+	
+	
+<CreateTimerScreen>:
+	BoxLayout:
+		orientation: "vertical"
+		
+		GridLayout:
+			cols: 2
+			rows: 2
+			size_hint: .65, .3
+			pos_hint: {"center_x": .5}
+			
+			Label:
+				id: timer_label_text
+				text: root.cur_timer_label_text
+				font_size: dp(25)
+				markup: True
+				text_size: self.size
+				halign: "right"
+				valign: "center"
+			
+			TimerButton:
+				text: "x"
+				font_size: dp(30)
+				size_hint: .5, 1
+				on_release: root.delete_item()
+				
+		GridLayout:
+			cols: 3
+			rows: 3
+			
+			TimerButton:
+				id: timer_btn1
+				text: "1"
+				on_release: root.timer_button_pressed("1")
+				
+			TimerButton:
+				id: timer_btn2
+				text: "2"
+				on_release: root.timer_button_pressed("2")
+				
+			TimerButton:
+				id: timer_btn3
+				text: "3"
+				on_release: root.timer_button_pressed("3")
+				
+			TimerButton:
+				id: timer_btn4
+				text: "4"
+				on_release: root.timer_button_pressed("4")
+				
+			TimerButton:
+				id: timer_btn5
+				text: "5"
+				on_release: root.timer_button_pressed("5")
+				
+			TimerButton:
+				id: timer_btn6
+				text: "6"
+				on_release: root.timer_button_pressed("6")
+				
+			TimerButton:
+				id: timer_btn7
+				text: "7"
+				on_release: root.timer_button_pressed("7")
+				
+			TimerButton:
+				id: timer_btn8
+				text: "8"
+				on_release: root.timer_button_pressed("8")
+				
+			TimerButton:
+				id: timer_btn9
+				text: "9"
+				on_release: root.timer_button_pressed("9")
+				
+		BoxLayout:
+			orientation: "vertical"
+			size_hint: 1, .6
+			
+			TimerButton:
+				id: timer_btn0
+				text: "0"
+				on_release: root.timer_button_pressed("0")
+				size_hint: .33, 1
+				pos_hint: {"center_x": .5}
+				
+			TimerButton:
+				id: start_btn
+				text: "START"
+				font_size: dp(17)
+				size_hint: .33, 1
+				pos_hint: {"center_x": .5}
+				disabled: True
+				on_release:
+					root.manager.current = "timer_display"
+					root.manager.transition.direction = "left"
+					
+					root.manager.get_screen("timer_display").given_time = (
+					(int(root.default_cur_timer[-6:-4]) * 60 * 60 if root.default_cur_timer[-6:-4] else 0)
+					+ (int(root.default_cur_timer[-4:-2]) * 60 if root.default_cur_timer[-4:-2] else 0)
+					+ (int(root.default_cur_timer[-2:]) if root.default_cur_timer[-2:] else 0)
+					)
+					
+					root.manager.get_screen("timer_display").cur_time =  (
+					(int(root.default_cur_timer[-6:-4]) * 60 * 60 if root.default_cur_timer[-6:-4] else 0)
+					+ (int(root.default_cur_timer[-4:-2]) * 60 if root.default_cur_timer[-4:-2] else 0)
+					+ (int(root.default_cur_timer[-2:]) if root.default_cur_timer[-2:] else 0)
+					)
+					root.start_display_timer()
+			
+			GridLayout:
+				cols: 3
+				rows: 1
+				size_hint: 1, .7
+				
+				TimerButton:
+					text: "CLOCK"
+					font_size: dp(12)
+					on_release:
+						root.manager.transition.direction = "right"
+						root.manager.current = "clock"
+					
+					
+				TimerButton:
+					text: "SET TIMER"
+					font_size: dp(12)
+					on_release:
+						root.manager.transition.direction = "left"
+						root.manager.current = "create_timer"
+					
+				TimerButton:
+					text: "VIEW TIMER"
+					font_size: dp(12)
+					on_release:
+						root.manager.transition.direction = "left"
+						root.manager.current = "timer_display"
+	
